@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero / Pinned Post -->
+{% if pinned_post %}
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-card">
+            {% if pinned_post.image %}
+            <div class="hero-image">
+                <img src="{{ pinned_post.image.url }}" alt="{{ pinned_post.title }}">
+            </div>
+            {% endif %}
+            <div class="hero-content">
+                <div class="hero-meta">
+                    {% if pinned_post.category %}
+                    <a href="{{ pinned_post.category.get_absolute_url }}" class="badge badge-primary">{{ pinned_post.category.name }}</a>
+                    {% endif %}
+                    <span class="meta-dot">•</span>
+                    <span class="meta-date">{{ pinned_post.created_at|date:"d M, Y" }}</span>
+                    <span class="meta-dot">•</span>
+                    <span class="meta-read">{{ pinned_post.reading_time }} daqiqa o'qish</span>
+                </div>
+                <h1 class="hero-title">
+                    <a href="{{ pinned_post.get_absolute_url }}">{{ pinned_post.title }}</a>
+                </h1>
+                <p class="hero-excerpt">{{ pinned_post.excerpt }}</p>
+                <a href="{{ pinned_post.get_absolute_url }}" class="btn btn-primary">
+                    Davomini o'qish
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Latest Posts -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">So'nggi maqolalar</h2>
+            <a href="{% url 'blog:post_list' %}" class="section-link">Barchasi →</a>
+        </div>
+        <div class="posts-grid">
+            {% for post in posts %}
+            <article class="post-card" data-aos="fade-up">
+                {% if post.image %}
+                <a href="{{ post.get_absolute_url }}" class="post-card-image">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy">
+                </a>
+                {% else %}
+                <a href="{{ post.get_absolute_url }}" class="post-card-image post-card-placeholder">
+                    <span class="placeholder-icon">✦</span>
+                </a>
+                {% endif %}
+                <div class="post-card-body">
+                    <div class="post-card-meta">
+                        {% if post.category %}
+                        <a href="{{ post.category.get_absolute_url }}" class="badge badge-sm">{{ post.category.name }}</a>
+                        {% endif %}
+                        <span class="meta-date">{{ post.created_at|date:"d M, Y" }}</span>
+                    </div>
+                    <h3 class="post-card-title">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </h3>
+                    <p class="post-card-excerpt">{{ post.excerpt|truncatewords:20 }}</p>
+                    <div class="post-card-footer">
+                        <span class="meta-read">{{ post.reading_time }} daqiqa</span>
+                        <span class="meta-views">👁 {{ post.view_count }}</span>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div class="empty-state">
+                <div class="empty-icon">📝</div>
+                <h3>Hali maqolalar yo'q</h3>
+                <p>Tez orada yangi maqolalar paydo bo'ladi!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Categories -->
+{% if categories %}
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Kategoriyalar</h2>
+        </div>
+        <div class="categories-grid">
+            {% for cat in categories %}
+            <a href="{{ cat.get_absolute_url }}" class="category-card">
+                <h3 class="category-name">{{ cat.name }}</h3>
+                <span class="category-count">{{ cat.post_count }} maqola</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

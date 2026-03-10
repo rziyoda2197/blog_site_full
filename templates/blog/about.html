@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="about-page">
+            <div class="about-header">
+                <div class="about-avatar">
+                    <span class="avatar-placeholder">👨‍💻</span>
+                </div>
+                <h1 class="page-title">Men haqimda</h1>
+                <p class="about-subtitle">Dasturchi, yozuvchi va texnologiya ishqibozi</p>
+            </div>
+
+            <div class="about-content prose">
+                <p>
+                    Assalomu alaykum! Men shaxsiy blogimga xush kelibsiz. Bu yerda men texnologiya,
+                    dasturlash va hayot haqidagi o'ylarimni baham ko'raman.
+                </p>
+
+                <h2>Tajriba</h2>
+                <p>
+                    Men bir necha yildan buyon dasturlash sohasida faoliyat yuritib kelaman.
+                    Asosan Python, Django va veb-texnologiyalar bilan ishlayman. Har kuni yangi narsalar
+                    o'rganish va ularni boshqalar bilan bo'lishish — mening eng sevimli mashg'ulotim.
+                </p>
+
+                <h2>Blog haqida</h2>
+                <p>
+                    Bu blog orqali men o'z tajribalarimni, o'rgangan narsalarimni va texnologiya
+                    dunyosidagi yangiliklarni sizlar bilan bo'lishaman. Maqolalar asosan quyidagi
+                    mavzularda bo'ladi:
+                </p>
+                <ul>
+                    <li>Dasturlash tillari va frameworklar</li>
+                    <li>Veb-dasturlash texnologiyalari</li>
+                    <li>Open source loyihalar</li>
+                    <li>Kasbiy o'sish va maslahatlar</li>
+                </ul>
+
+                <h2>Bog'lanish</h2>
+                <p>
+                    Agar savollaringiz yoki takliflaringiz bo'lsa, bemalol
+                    <a href="{% url 'blog:contact' %}">aloqa sahifasi</a> orqali murojaat qiling.
+                    Men har doim yangi g'oyalar va hamkorlik imkoniyatlariga ochiqman.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

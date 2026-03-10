@@ -1,0 +1,62 @@
+<!-- Sidebar -->
+<aside class="sidebar">
+    <!-- About Widget -->
+    <div class="sidebar-widget">
+        <div class="widget-author">
+            <div class="author-avatar">👨‍💻</div>
+            <h4>Blog Muallifi</h4>
+            <p>Dasturchi va texnologiya ishqibozi. Bu blogda tajribalarimni bo'lishaman.</p>
+        </div>
+    </div>
+
+    <!-- Popular Posts -->
+    {% if sidebar_popular_posts %}
+    <div class="sidebar-widget">
+        <h3 class="widget-title">Mashhur maqolalar</h3>
+        <div class="widget-posts">
+            {% for post in sidebar_popular_posts %}
+            <a href="{{ post.get_absolute_url }}" class="widget-post-item">
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="widget-post-img" loading="lazy">
+                {% else %}
+                <div class="widget-post-img widget-post-placeholder">✦</div>
+                {% endif %}
+                <div class="widget-post-info">
+                    <span class="widget-post-title">{{ post.title|truncatewords:8 }}</span>
+                    <span class="widget-post-meta">👁 {{ post.view_count }} • {{ post.created_at|date:"d M" }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Categories -->
+    {% if sidebar_categories %}
+    <div class="sidebar-widget">
+        <h3 class="widget-title">Kategoriyalar</h3>
+        <ul class="widget-categories">
+            {% for cat in sidebar_categories %}
+            <li>
+                <a href="{{ cat.get_absolute_url }}">
+                    <span>{{ cat.name }}</span>
+                    <span class="cat-count">{{ cat.post_count }}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Tags Cloud -->
+    {% if sidebar_tags %}
+    <div class="sidebar-widget">
+        <h3 class="widget-title">Teglar</h3>
+        <div class="tags-cloud">
+            {% for tag in sidebar_tags %}
+            <a href="{{ tag.get_absolute_url }}" class="tag-cloud-item">#{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</aside>

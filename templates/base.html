@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ page_title|default:"Shaxsiy Blog" }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ meta_description|default:"Texnologiya, dasturlash va hayot haqida maqolalar" }}{% endblock %}">
+    <meta name="author" content="Blog Muallifi">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% block og_title %}{{ page_title|default:"Shaxsiy Blog" }}{% endblock %}">
+    <meta property="og:description" content="{{ meta_description|default:"Texnologiya, dasturlash va hayot haqida maqolalar" }}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Highlight.js for code blocks -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-content">
+            <a href="{% url 'blog:home' %}" class="navbar-brand">
+                <span class="brand-icon">✦</span>
+                <span class="brand-text">Blog</span>
+            </a>
+
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Menyu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="navbar-nav" id="navbarNav">
+                <li><a href="{% url 'blog:home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Bosh sahifa</a></li>
+                <li><a href="{% url 'blog:post_list' %}" class="nav-link {% if request.resolver_match.url_name == 'post_list' %}active{% endif %}">Maqolalar</a></li>
+                <li><a href="{% url 'blog:about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">Men haqimda</a></li>
+                <li><a href="{% url 'blog:contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Aloqa</a></li>
+            </ul>
+
+            <div class="navbar-search">
+                <form action="{% url 'blog:search' %}" method="get" class="search-form-nav">
+                    <input type="text" name="q" placeholder="Qidirish..." class="search-input-nav" value="{{ request.GET.q|default:'' }}">
+                    <button type="submit" class="search-btn-nav">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages-container">
+        <div class="container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+                <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="{% url 'blog:home' %}" class="footer-brand">
+                        <span class="brand-icon">✦</span>
+                        <span>Blog</span>
+                    </a>
+                    <p>Texnologiya, dasturlash va hayot haqida o'ylashlar va tajribalarni bo'lishish.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Sahifalar</h4>
+                    <ul>
+                        <li><a href="{% url 'blog:home' %}">Bosh sahifa</a></li>
+                        <li><a href="{% url 'blog:post_list' %}">Maqolalar</a></li>
+                        <li><a href="{% url 'blog:about' %}">Men haqimda</a></li>
+                        <li><a href="{% url 'blog:contact' %}">Aloqa</a></li>
+                    </ul>
+                </div>
+                <div class="footer-categories">
+                    <h4>Kategoriyalar</h4>
+                    <ul>
+                        {% for cat in sidebar_categories|slice:":5" %}
+                        <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+                        {% empty %}
+                        <li>Hali kategoriyalar yo'q</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Shaxsiy Blog. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

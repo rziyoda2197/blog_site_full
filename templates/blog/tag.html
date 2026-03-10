@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">#{{ tag.name }}</h1>
+            <p class="page-subtitle">"{{ tag.name }}" tegi bo'yicha maqolalar</p>
+        </div>
+
+        <div class="content-layout">
+            <div class="content-main">
+                <div class="posts-list">
+                    {% for post in posts %}
+                    <article class="post-list-item">
+                        {% if post.image %}
+                        <a href="{{ post.get_absolute_url }}" class="post-list-image">
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy">
+                        </a>
+                        {% endif %}
+                        <div class="post-list-body">
+                            <div class="post-card-meta">
+                                {% if post.category %}
+                                <a href="{{ post.category.get_absolute_url }}" class="badge badge-sm">{{ post.category.name }}</a>
+                                {% endif %}
+                                <span class="meta-date">{{ post.created_at|date:"d M, Y" }}</span>
+                            </div>
+                            <h2 class="post-list-title">
+                                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                            </h2>
+                            <p class="post-list-excerpt">{{ post.excerpt|truncatewords:30 }}</p>
+                            <div class="post-card-footer">
+                                <a href="{{ post.get_absolute_url }}" class="read-more">Davomini o'qish →</a>
+                            </div>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <div class="empty-state">
+                        <div class="empty-icon">🏷️</div>
+                        <h3>Bu teg bo'yicha hali maqolalar yo'q</h3>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if posts.has_other_pages %}
+                <nav class="pagination">
+                    {% if posts.has_previous %}
+                    <a href="?page={{ posts.previous_page_number }}" class="page-link">← Oldingi</a>
+                    {% endif %}
+                    <div class="page-numbers">
+                        {% for num in posts.paginator.page_range %}
+                        {% if posts.number == num %}
+                        <span class="page-link active">{{ num }}</span>
+                        {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %} 
+                        <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}" class="page-link">Keyingi →</a>
+                    {% endif %}
+                </nav>
+                {% endif %}
+            </div>
+
+            {% include 'blog/includes/sidebar.html' %}
+        </div>
+    </div>
+</section>
+{% endblock %}

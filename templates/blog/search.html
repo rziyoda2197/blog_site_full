@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Qidiruv</h1>
+        </div>
+
+        <div class="content-layout">
+            <div class="content-main">
+                <!-- Search Form -->
+                <form action="{% url 'blog:search' %}" method="get" class="search-form-page">
+                    <div class="search-wrapper">
+                        <input type="text" name="q" value="{{ query }}" placeholder="Maqolalarni qidirish..."
+                            class="search-input-lg" autofocus>
+                        <button type="submit" class="btn btn-primary">Qidirish</button>
+                    </div>
+                </form>
+
+                {% if query %}
+                <p class="search-results-info">
+                    "{{ query }}" bo'yicha <strong>{{ results.paginator.count }}</strong> ta natija topildi
+                </p>
+                {% endif %}
+
+                <div class="posts-list">
+                    {% for post in results %}
+                    <article class="post-list-item">
+                        {% if post.image %}
+                        <a href="{{ post.get_absolute_url }}" class="post-list-image">
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy">
+                        </a>
+                        {% endif %}
+                        <div class="post-list-body">
+                            <div class="post-card-meta">
+                                {% if post.category %}
+                                <a href="{{ post.category.get_absolute_url }}" class="badge badge-sm">{{ post.category.name }}</a>
+                                {% endif %}
+                                <span class="meta-date">{{ post.created_at|date:"d M, Y" }}</span>
+                            </div>
+                            <h2 class="post-list-title">
+                                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                            </h2>
+                            <p class="post-list-excerpt">{{ post.excerpt|truncatewords:30 }}</p>
+                            <div class="post-card-footer">
+                                <a href="{{ post.get_absolute_url }}" class="read-more">Davomini o'qish →</a>
+                            </div>
+                        </div>
+                    </article>
+                    {% empty %}
+                    {% if query %}
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <h3>Natija topilmadi</h3>
+                        <p>Boshqa kalit so'zlar bilan qidirib ko'ring</p>
+                    </div>
+                    {% endif %}
+
+                    {% endfor %}
+                </div>
+
+                {% if results.has_other_pages %}
+                <nav class="pagination">
+                    {% if results.has_previous %}
+                    <a href="?q={{ query }}&page={{ results.previous_page_number }}" class="page-link">← Oldingi</a>
+                    {% endif %}
+                    <div class="page-numbers">
+                        {% for num in results.paginator.page_range %}
+                        {% if results.number == num %}
+                        <span class="page-link active">{{ num }}</span>
+                        {% elif num > results.number|add:'-3' and num < results.number|add:'3' %} <a
+                            href="?q={{ query }}&page={{ num }}" class="page-link">{{ num }}</a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if results.has_next %}
+                    <a href="?q={{ query }}&page={{ results.next_page_number }}" class="page-link">Keyingi →</a>
+                    {% endif %}
+                </nav>
+                {% endif %}
+            </div>
+
+            {% include 'blog/includes/sidebar.html' %}
+        </div>
+    </div>
+</section>
+{% endblock %}

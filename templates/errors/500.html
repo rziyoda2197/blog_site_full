@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server xatosi — 500</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="error-page">
+        <div class="error-content">
+            <div class="error-code">500</div>
+            <h1>Server xatosi</h1>
+            <p>Ichki server xatosi yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.</p>
+            <a href="/" class="btn btn-primary">Bosh sahifaga qaytish</a>
+        </div>
+    </div>
+</body>
+
+</html>
